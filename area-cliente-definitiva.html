@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Area Cliente — Home Coaching</title>
+<style>
+body{margin:0;background:#f6f7fb;color:#111;font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}
+.wrap{width:min(980px,calc(100% - 32px));margin:auto;padding:42px 0 70px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.brand{font-weight:900;letter-spacing:-.5px}.muted{color:#6e6e73}.logout{border:1px solid #d2d2d7;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:800}.card{background:#fff;border:1px solid #e2e3e8;border-radius:22px;padding:28px;margin-top:24px}.hero{padding:28px;border-radius:22px;background:linear-gradient(135deg,#eef6ff,#f8f3ff);border:1px solid #e1e5ee}.hero h1{font-size:38px;line-height:1.05;letter-spacing:-2px;margin:8px 0}.hero p{margin:0;color:#6e6e73}.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.day{border:1px solid #e2e3e8;border-radius:16px;padding:18px;background:#fff}.day strong{display:block;font-size:20px}.day .status{display:inline-block;margin-top:8px;color:#6e6e73;font-size:13px}.loading{padding:40px;text-align:center;color:#6e6e73}.error{padding:16px;border-radius:12px;background:#fff0ef;color:#a32119;margin-top:18px}.ready{color:#24723b;font-weight:800}.day.done{border-color:#b9dec2;background:#f3fbf5}.day.done .status{color:#24723b;font-weight:800}
+@media(max-width:650px){.top{flex-direction:column}.progress{grid-template-columns:1fr}.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="top"><div><div class="brand">HOME COACHING</div><div class="muted">AREA CLIENTE</div></div><button id="logout" class="logout" type="button">ESCI</button></div>
+<section id="content" class="loading">Verifico il tuo accesso…</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const URL='https://exhgrwelqwitxlfscybo.supabase.co';
+const KEY='sb_publishable_efqq6jXmGTgdYidkIz55gw_PkwcOLH-';
+const supabase=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const content=document.getElementById('content');
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const timeout=(p,ms)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('TIMEOUT')),ms))]);
+
+async function logout(){
+  try{ await timeout(supabase.auth.signOut({scope:'global'}),5000); }catch(e){}
+  // Clean only Supabase auth entries for this project, then return to login.
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i); if(k && k.startsWith('sb-exhgrwelqwitxlfscybo-auth-token')) localStorage.removeItem(k);
+  }
+  window.location.replace('clienti.html?loggedout=1');
+}
+document.getElementById('logout').addEventListener('click',logout);
+
+async function load(){
+  try{
+    const {data:{session},error}=await timeout(supabase.auth.getSession(),6000);
+    if(error) throw error;
+    if(!session){window.location.replace('clienti.html');return;}
+
+    const meta=session.user.user_metadata||{};
+    const fallbackName=meta.full_name || meta.name || session.user.email || 'cliente';
+    // Render immediately once auth is known. The profile is an enhancement, not a gate.
+    content.innerHTML=`<section class="hero"><div class="muted">IL TUO PERCORSO</div><h1>Ciao, ${esc(fallbackName)} 👋</h1><p>Questa è la tua area personale. Hai fino a 3 allenamenti programmati ogni settimana.</p></section><section class="card"><h2 style="margin-top:0">SETTIMANA 1</h2><p class="muted">Completa gli allenamenti secondo il tuo ritmo: puoi farne 1, 2 oppure tutti e 3.</p><div id="days" class="progress"><article class="day"><strong>Giorno 1</strong><span class="status">Pronto</span></article><article class="day"><strong>Giorno 2</strong><span class="status">Pronto</span></article><article class="day"><strong>Giorno 3</strong><span class="status">Pronto</span></article></div></section>`;
+
+    // Load profile/workouts in background; never trap the customer on a spinner.
+    Promise.allSettled([
+      timeout(supabase.from('profiles').select('full_name,role,goal,level').eq('id',session.user.id).maybeSingle(),6000),
+      timeout(supabase.from('weekly_workouts').select('id,day_number,title,duration_minutes,published').eq('client_id',session.user.id).eq('week_number',1).order('day_number'),6000),
+      timeout(supabase.from('workout_completions').select('workout_id').eq('client_id',session.user.id),6000)
+    ]).then(results=>{
+      const p=results[0].status==='fulfilled'?results[0].value.data:null;
+      const w=results[1].status==='fulfilled'?results[1].value.data||[]:[];
+      const c=results[2].status==='fulfilled'?results[2].value.data||[]:[];
+      if(p?.role && p.role!=='client'){content.insertAdjacentHTML('beforeend','<div class="error">Questo account non è un account cliente.</div>'); return;}
+      const done=new Set(c.map(x=>x.workout_id));
+      const days=document.getElementById('days'); if(!days)return;
+      days.innerHTML=[1,2,3].map(day=>{const x=w.find(y=>y.day_number===day);const isDone=x&&done.has(x.id);return x?`<article class="day ${isDone?'done':''}"><strong>Giorno ${day}</strong><span class="status">${isDone?'✓ Completato':(x.published?'Pronto':'In preparazione')}</span>${x.title?`<div class="muted" style="margin-top:8px">${esc(x.title)}</div>`:''}${x.duration_minutes?`<div class="muted" style="font-size:12px;margin-top:3px">Max ${x.duration_minutes} minuti</div>`:''}</article>`:`<article class="day"><strong>Giorno ${day}</strong><span class="status">Da programmare</span></article>`;}).join('');
+    });
+  }catch(e){
+    content.innerHTML='<div class="error">La sessione non è disponibile. Torna a CLIENTI e accedi di nuovo.</div>';
+    console.error(e);
+  }
+}
+load();
+</script>
+</body></html>

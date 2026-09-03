@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inizia — HOME COACHING</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#1d1d1f;--muted:#6e6e73;--blue:#007aff;--red:#ff3b30;--line:#d2d2d7;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f4f7ff,#fff 50%,#fff5fa);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}.wrap{width:min(900px,calc(100% - 36px));margin:auto}
+header{height:74px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #dddfe5}.logo{font-weight:900}.logo span{color:var(--red)}header a{text-decoration:none;color:inherit}.back{font-size:14px;color:#666!important}
+.hero{text-align:center;padding:60px 0 30px}.ey{font-size:12px;color:#6f72ff;font-weight:900;letter-spacing:2px}.hero h1{font-size:64px;letter-spacing:-4px;line-height:.95;margin:12px 0}.hero p{color:#666;max-width:650px;margin:auto;font-size:19px}.steps{display:flex;justify-content:center;gap:9px;margin-top:28px}.step{padding:9px 13px;border-radius:999px;background:#eeeef2;color:#777;font-weight:800;font-size:12px}.active{background:#111;color:#fff}
+.state{display:none}.state-toggle{position:absolute;opacity:0;pointer-events:none}.questionnaire-label{display:block}.account-label{display:none}.state-toggle:checked~.questionnaire-label{display:none}.state-toggle:checked~.account-label{display:block}.state-toggle:checked~.questionnaire-step{display:none}.state-toggle:checked~.account-step{display:block}.state-toggle:checked~.hero .step1{background:#eeeef2;color:#777}.state-toggle:checked~.hero .step2{background:#111;color:#fff}
+.card{background:#fff;border:1px solid #e0e2e7;border-radius:24px;box-shadow:0 18px 50px rgba(0,0,0,.06);padding:30px;margin-bottom:24px}.card h2{font-size:30px;letter-spacing:-1px;margin:0 0 6px}.intro{color:#777;margin:0 0 24px}fieldset{border:0;padding:0;margin:0 0 24px}legend{font-weight:900;font-size:15px;margin-bottom:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}.field input,.field textarea{width:100%;padding:13px 14px;border:1px solid #d9dbe1;border-radius:12px;font:inherit}.field textarea{min-height:110px;resize:vertical}.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.opts label{cursor:pointer}.opts input{position:absolute;opacity:0}.opts span{display:block;text-align:center;padding:13px 10px;border:1px solid #dfe1e6;border-radius:12px;font-weight:800;background:#fff}.opts input:checked+span{border:2px solid #111;background:#f5f6f8}.cons{display:flex;gap:9px;color:#70737a;font-size:12px;margin:8px 0 18px;align-items:flex-start}.buttons{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:15px 20px;background:var(--red);color:#fff;font-weight:900;cursor:pointer;text-decoration:none}.secondary{background:#fff;color:#111;border:1px solid #d9dbe1}.summary{padding:13px 15px;background:#edf4ff;color:#4d617c;border-radius:14px;font-size:13px;margin-bottom:22px}.account-step{display:none}.helper{font-size:12px;color:#8b8d93;margin-top:15px;text-align:center}
+@media(max-width:650px){.grid,.opts{grid-template-columns:1fr}.hero h1{font-size:54px}.card{padding:23px}.buttons .btn{width:100%}}
+</style>
+</head>
+<body>
+<header class="wrap"><a class="logo" href="index.html">HOME<span>COACHING</span></a><a class="back" href="index.html">← Torna alla Home</a></header>
+<main class="wrap">
+<input id="goAccount" class="state-toggle" type="checkbox">
+<section class="hero">
+<div class="ey">HOME COACHING 1:1 · 59 € / MESE</div><h1>Iniziamo da te.</h1><p>Prima compila il questionario. Poi creerai il tuo account personale.</p>
+<div class="steps"><span class="step step1 active">1 · Questionario</span><span class="step step2">2 · Account</span></div>
+</section>
+<section class="questionnaire-label questionnaire-step card">
+<h2>Raccontami di te</h2><p class="intro">Queste informazioni mi aiutano a partire dal tuo punto di partenza.</p>
+<fieldset><legend>Dati di base</legend><div class="grid"><div class="field"><label for="name">Nome e cognome</label><input id="name" autocomplete="name"></div><div class="field"><label for="age">Età</label><input id="age" type="number" min="16" max="99"></div></div></fieldset>
+<fieldset><legend>Obiettivo principale</legend><div class="opts"><label><input type="radio" name="goal" value="Dimagrimento"><span>Dimagrimento</span></label><label><input type="radio" name="goal" value="Forza"><span>Forza</span></label><label><input type="radio" name="goal" value="Forma fisica"><span>Forma fisica</span></label><label><input type="radio" name="goal" value="Tonificazione"><span>Tonificazione</span></label><label><input type="radio" name="goal" value="Massa muscolare"><span>Massa muscolare</span></label><label><input type="radio" name="goal" value="Altro"><span>Altro</span></label></div></fieldset>
+<fieldset><legend>Esperienza</legend><div class="opts"><label><input type="radio" name="level" value="Principiante"><span>Principiante</span></label><label><input type="radio" name="level" value="Intermedio"><span>Intermedio</span></label><label><input type="radio" name="level" value="Avanzato"><span>Avanzato</span></label></div></fieldset>
+<fieldset><legend>Spazio e attrezzatura a casa</legend><div class="field"><textarea id="equipment" placeholder="Es. tappetino, elastici, spazio libero..."></textarea></div></fieldset>
+<fieldset><legend>Tempo che vuoi dedicare</legend><div class="opts"><label><input type="radio" name="time" value="Fino a 30 minuti"><span>Fino a 30'</span></label><label><input type="radio" name="time" value="30-50 minuti"><span>30–50'</span></label><label><input type="radio" name="time" value="50 minuti"><span>50'</span></label></div></fieldset>
+<fieldset><legend>C'è altro che vuoi raccontarmi?</legend><div class="field"><textarea id="notes"></textarea></div></fieldset>
+<label class="cons"><input type="checkbox"><span>Autorizzo il ricontatto per valutare il percorso Home Coaching e dichiaro di aver letto l'informativa privacy.</span></label>
+<div class="buttons"><label for="goAccount" class="btn">CONTINUA →</label><a class="btn secondary" href="index.html">ANNULLA</a></div>
+<p class="helper">Il pulsante CONTINUA è una transizione HTML: non invia e non ricarica la pagina.</p>
+</section>
+<section class="account-label account-step card">
+<h2>Crea il tuo account</h2><p class="intro">Le credenziali che userai per entrare nella tua area personale.</p><div class="summary">Questionario completato. Ora crea il tuo accesso personale.</div>
+<div class="grid"><div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="password">Password</label><input id="password" type="password" minlength="8" autocomplete="new-password"></div></div>
+<div class="field" style="margin-top:15px"><label for="password2">Conferma password</label><input id="password2" type="password" minlength="8" autocomplete="new-password"></div>
+<label class="cons" style="margin-top:18px"><input type="checkbox"><span>Accetto i termini del servizio e la gestione dei miei dati per il funzionamento di Home Coaching.</span></label>
+<div class="buttons"><button id="createAccountBtn" class="btn" type="button">CREA IL MIO ACCOUNT →</button><label for="goAccount" class="btn secondary">← MODIFICA QUESTIONARIO</label></div>
+</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const SUPABASE_URL = 'https://exhgrwelqwitxlfscybo.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_efqq6jXmGTgdYidkIz55gw_PkwcOLH-';
+  const btn = document.getElementById('createAccountBtn');
+  if (!btn) return;
+
+  const getValue = id => (document.getElementById(id)?.value || '').trim();
+  const getRadio = name => document.querySelector('input[name="'+name+'"]:checked')?.value || '';
+  const showStatus = (text, ok=false) => {
+    let box=document.getElementById('accountStatus');
+    if(!box){ box=document.createElement('div'); box.id='accountStatus'; box.className='helper'; btn.parentElement.parentElement.appendChild(box); }
+    box.style.color=ok?'#246536':'#a32119';
+    box.style.fontWeight='800';
+    box.textContent=text;
+  };
+
+  btn.addEventListener('click', async () => {
+    const name=getValue('name'), age=getValue('age'), equipment=getValue('equipment'), notes=getValue('notes');
+    const goal=getRadio('goal'), level=getRadio('level'), time=getRadio('time');
+    const email=getValue('email').toLowerCase();
+    const password=getValue('password'), password2=getValue('password2');
+    const privacy=[...document.querySelectorAll('.cons input[type="checkbox"]')];
+
+    if(!name || !age || !goal || !level || !time || !email || !password || !password2){
+      showStatus('Completa tutti i campi obbligatori prima di continuare.'); return;
+    }
+    if(password.length < 8){ showStatus('La password deve avere almeno 8 caratteri.'); return; }
+    if(password !== password2){ showStatus('Le password non coincidono.'); return; }
+    if(privacy.some(x=>!x.checked)){ showStatus('Accetta le autorizzazioni richieste per continuare.'); return; }
+
+    if(!window.supabase?.createClient){
+      showStatus('Il servizio di autenticazione non è disponibile. Apri questa pagina tramite un indirizzo web.'); return;
+    }
+
+    btn.disabled=true; const original=btn.textContent; btn.textContent='CREAZIONE…';
+    try {
+      const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      const {data,error}=await client.auth.signUp({
+        email,password,
+        options:{data:{full_name:name,age:Number(age),goal,level,equipment,time_available:time,intake_notes:notes,role:'client'}}
+      });
+      if(error){
+        showStatus(/already registered|already exists/i.test(error.message)
+          ? 'Questa email è già registrata. Usa il login CLIENTI.'
+          : 'Errore nella registrazione: '+error.message);
+        return;
+      }
+      if(data?.session){
+        showStatus('✓ Account creato. Ti porto nella tua area personale…',true);
+        setTimeout(()=>location.href='area-cliente.html',600);
+      } else {
+        showStatus('✓ Account creato. Controlla la tua email e conferma l’indirizzo. Poi accedi da CLIENTI.',true);
+      }
+    } catch(e){
+      showStatus('Non riesco a contattare il servizio di autenticazione. Se stai aprendo il file direttamente, il login va testato sul sito online.');
+    } finally { btn.disabled=false; btn.textContent=original; }
+  });
+})();
+</script>
+</body>
+</html>

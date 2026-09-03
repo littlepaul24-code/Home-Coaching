@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inizia — HOME COACHING</title>
+<style>
+body{margin:0;background:linear-gradient(135deg,#f4f7ff,#fff 50%,#fff5fa);color:#111;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}
+.wrap{width:min(900px,calc(100% - 36px));margin:auto}
+header{height:74px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #dddfe5}
+a{text-decoration:none;color:inherit}.logo{font-weight:900}.logo span{color:#ff3b30}.back{font-size:14px;color:#666}
+.hero{text-align:center;padding:65px 0 30px}.ey{font-size:12px;color:#6f72ff;font-weight:900;letter-spacing:2px}.hero h1{font-size:64px;letter-spacing:-4px;line-height:.95;margin:12px 0}.hero p{color:#666;max-width:650px;margin:auto;font-size:19px}
+.steps{display:flex;justify-content:center;gap:9px;margin-top:28px}.step{padding:9px 13px;border-radius:999px;background:#eeeef2;color:#777;font-weight:800;font-size:12px}.step.active{background:#111;color:#fff}
+.card{background:#fff;border:1px solid #e0e2e7;border-radius:24px;box-shadow:0 18px 50px rgba(0,0,0,.06);padding:30px;margin-bottom:24px}.card h2{font-size:30px;letter-spacing:-1px;margin:0 0 6px}.intro{color:#777;margin:0 0 24px}
+fieldset{border:0;padding:0;margin:0 0 24px}legend{font-weight:900;font-size:15px;margin-bottom:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}.field input,.field textarea{width:100%;padding:13px 14px;border:1px solid #d9dbe1;border-radius:12px;font:inherit;box-sizing:border-box}.field textarea{min-height:110px;resize:vertical}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.opts label{cursor:pointer}.opts input{position:absolute;opacity:0}.opts span{display:block;text-align:center;padding:13px 10px;border:1px solid #dfe1e6;border-radius:12px;font-weight:800;background:#fff}.opts input:checked+span{border:2px solid #111;background:#f5f6f8}
+.cons{display:flex;gap:9px;color:#70737a;font-size:12px;margin:8px 0 18px;align-items:flex-start}.buttons{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:15px 20px;background:#ff3b30;color:#fff;font-weight:900;cursor:pointer}.secondary{background:#fff;color:#111;border:1px solid #d9dbe1}
+.summary{padding:13px 15px;background:#edf4ff;color:#4d617c;border-radius:14px;font-size:13px;margin-bottom:22px}.hidden{display:none!important}.msg{margin-top:14px;padding:13px;border-radius:12px;background:#fff0ef;color:#a32119;font-weight:800;font-size:13px}
+@media(max-width:650px){.grid,.opts{grid-template-columns:1fr}.hero h1{font-size:54px}.card{padding:23px}.buttons .btn{width:100%}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <a class="logo" href="index.html">HOME<span>COACHING</span></a>
+  <a class="back" href="index.html">← Torna alla Home</a>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div class="ey">HOME COACHING 1:1 · 59 € / MESE</div>
+    <h1>Iniziamo da te.</h1>
+    <p>Prima compila il questionario. Poi creerai il tuo account personale.</p>
+    <div class="steps"><span id="s1" class="step active">1 · Questionario</span><span id="s2" class="step">2 · Account</span></div>
+  </section>
+
+  <section id="qStep" class="card">
+    <h2>Raccontami di te</h2>
+    <p class="intro">Queste informazioni mi aiutano a partire dal tuo punto di partenza.</p>
+
+    <fieldset><legend>Dati di base</legend><div class="grid">
+      <div class="field"><label for="name">Nome e cognome</label><input id="name" type="text" autocomplete="name"></div>
+      <div class="field"><label for="age">Età</label><input id="age" type="number" min="16" max="99"></div>
+    </div></fieldset>
+
+    <fieldset><legend>Obiettivo principale</legend><div class="opts">
+      <label><input type="radio" name="goal" value="Dimagrimento"><span>Dimagrimento</span></label>
+      <label><input type="radio" name="goal" value="Forza"><span>Forza</span></label>
+      <label><input type="radio" name="goal" value="Forma fisica"><span>Forma fisica</span></label>
+      <label><input type="radio" name="goal" value="Tonificazione"><span>Tonificazione</span></label>
+      <label><input type="radio" name="goal" value="Massa muscolare"><span>Massa muscolare</span></label>
+      <label><input type="radio" name="goal" value="Altro"><span>Altro</span></label>
+    </div></fieldset>
+
+    <fieldset><legend>Esperienza</legend><div class="opts">
+      <label><input type="radio" name="level" value="Principiante"><span>Principiante</span></label>
+      <label><input type="radio" name="level" value="Intermedio"><span>Intermedio</span></label>
+      <label><input type="radio" name="level" value="Avanzato"><span>Avanzato</span></label>
+    </div></fieldset>
+
+    <fieldset><legend>Spazio e attrezzatura a casa</legend><div class="field"><textarea id="equipment" placeholder="Es. tappetino, elastici, spazio libero..."></textarea></div></fieldset>
+
+    <fieldset><legend>Tempo che vuoi dedicare</legend><div class="opts">
+      <label><input type="radio" name="time" value="Fino a 30 minuti"><span>Fino a 30'</span></label>
+      <label><input type="radio" name="time" value="30-50 minuti"><span>30–50'</span></label>
+      <label><input type="radio" name="time" value="50 minuti"><span>50'</span></label>
+    </div></fieldset>
+
+    <fieldset><legend>C'è altro che vuoi raccontarmi?</legend><div class="field"><textarea id="notes"></textarea></div></fieldset>
+
+    <label class="cons"><input id="privacy" type="checkbox"><span>Autorizzo il ricontatto per valutare il percorso Home Coaching e dichiaro di aver letto l'informativa privacy.</span></label>
+
+    <div class="buttons">
+      <button id="continueBtn" class="btn" type="button">CONTINUA →</button>
+      <a class="btn secondary" href="index.html">ANNULLA</a>
+    </div>
+    <div id="qError" class="msg hidden"></div>
+  </section>
+
+  <section id="accountStep" class="card hidden">
+    <h2>Crea il tuo account</h2>
+    <p class="intro">Le credenziali che userai per entrare nella tua area personale.</p>
+    <div id="summary" class="summary"></div>
+    <div class="grid">
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email"></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" minlength="8" autocomplete="new-password"></div>
+    </div>
+    <div class="field" style="margin-top:15px"><label for="password2">Conferma password</label><input id="password2" type="password" minlength="8" autocomplete="new-password"></div>
+    <label class="cons" style="margin-top:18px"><input id="terms" type="checkbox"><span>Accetto i termini del servizio e la gestione dei miei dati per il funzionamento di Home Coaching.</span></label>
+    <div class="buttons">
+      <button id="createBtn" class="btn" type="button">CREA IL MIO ACCOUNT →</button>
+      <button id="backBtn" class="btn secondary" type="button">← MODIFICA QUESTIONARIO</button>
+    </div>
+    <div id="accountMsg" class="msg hidden"></div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const qStep=document.getElementById('qStep');
+  const accountStep=document.getElementById('accountStep');
+  const continueBtn=document.getElementById('continueBtn');
+  const backBtn=document.getElementById('backBtn');
+  const qError=document.getElementById('qError');
+  const summary=document.getElementById('summary');
+  const s1=document.getElementById('s1');
+  const s2=document.getElementById('s2');
+  const qKey='hc_questionnaire_test6';
+
+  function get(name){ const el=document.querySelector('input[name="'+name+'"]:checked'); return el?el.value:''; }
+  function readData(){
+    return {
+      name: document.getElementById('name').value.trim(),
+      age: document.getElementById('age').value,
+      goal: get('goal'),
+      level: get('level'),
+      equipment: document.getElementById('equipment').value.trim(),
+      time_available: get('time'),
+      intake_notes: document.getElementById('notes').value.trim(),
+      privacy: document.getElementById('privacy').checked
+    };
+  }
+  function showError(text){ qError.textContent=text; qError.classList.remove('hidden'); }
+
+  continueBtn.addEventListener('click', function(){
+    qError.classList.add('hidden');
+    const d=readData();
+    if(!d.name){showError('Inserisci nome e cognome.');return;}
+    if(!d.age || Number(d.age)<16 || Number(d.age)>99){showError('Inserisci un’età valida.');return;}
+    if(!d.goal){showError('Scegli il tuo obiettivo principale.');return;}
+    if(!d.level){showError('Scegli il tuo livello.');return;}
+    if(!d.time_available){showError('Scegli il tempo che vuoi dedicare.');return;}
+    if(!d.privacy){showError('Per continuare devi accettare il consenso al ricontatto.');return;}
+
+    localStorage.setItem(qKey, JSON.stringify(d));
+    summary.textContent='Questionario completato per '+d.name+'. Ora crea il tuo accesso personale.';
+    qStep.classList.add('hidden');
+    accountStep.classList.remove('hidden');
+    s1.classList.remove('active');
+    s2.classList.add('active');
+    window.scrollTo(0,0);
+  });
+
+  backBtn.addEventListener('click', function(){
+    accountStep.classList.add('hidden');
+    qStep.classList.remove('hidden');
+    s2.classList.remove('active');
+    s1.classList.add('active');
+    window.scrollTo(0,0);
+  });
+
+  // Intentionally no form and no submit handler in Step 1.
+})();
+</script>
+</body>
+</html>

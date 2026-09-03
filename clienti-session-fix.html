@@ -1,0 +1,57 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clienti — Home Coaching</title><style>body{margin:0;background:linear-gradient(135deg,#f7fbff,#fff,#f7f0ff);color:#1d1d1f;font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}.wrap{width:min(520px,calc(100% - 32px));margin:auto;padding:80px 0}.brand{font-weight:900;letter-spacing:-.5px;margin-bottom:50px}.card{background:#fff;border:1px solid #d2d2d7;border-radius:26px;padding:32px;box-shadow:0 20px 55px rgba(0,0,0,.07)}h1{font-size:44px;line-height:1;margin:0 0 10px;letter-spacing:-2px}p{color:#6e6e73}.field{margin:18px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.field input{width:100%;padding:14px;border:1px solid #d2d2d7;border-radius:12px;font:inherit;box-sizing:border-box}.btn{width:100%;padding:15px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:900;cursor:pointer}.btn:disabled{opacity:.55}.back{display:inline-block;margin-top:18px;color:#007aff;font-weight:700;font-size:14px}.msg{margin-top:14px;font-size:14px;font-weight:700}.loading{opacity:.7}</style></head><body><main class="wrap"><div class="brand">HOME COACHING</div><div class="card"><div style="color:#007aff;font-weight:800;font-size:12px;letter-spacing:1.5px">AREA CLIENTI</div><h1>Accedi.</h1><p>Entra nel tuo percorso personale.</p><form id="loginForm"><div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><button id="submit" class="btn" type="submit">ACCEDI →</button><div id="msg" class="msg"></div></form><a class="back" href="index.html">← Torna alla Home</a></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://exhgrwelqwitxlfscybo.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_efqq6jXmGTgdYidkIz55gw_PkwcOLH-';
+let supabaseClient = null;
+const form = document.getElementById('loginForm');
+const btn = document.getElementById('submit');
+const msg = document.getElementById('msg');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+
+function showMessage(text, ok=false){
+  msg.textContent = text;
+  msg.style.color = ok ? '#246536' : '#a32119';
+}
+
+async function getClient(){
+  if(!window.supabase || typeof window.supabase.createClient !== 'function') throw new Error('AUTH_LIBRARY');
+  if(!supabaseClient) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  return supabaseClient;
+}
+
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  const email = emailInput.value.trim().toLowerCase();
+  const password = passwordInput.value;
+  if(!email || !password){
+    form.reportValidity();
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'ACCESSO…';
+  showMessage('');
+  try{
+    const supabase = await getClient();
+    const {data,error} = await supabase.auth.signInWithPassword({email,password});
+    if(error){
+      showMessage(error.message === 'Email not confirmed' ? 'Devi prima confermare la tua email. Controlla la posta.' : 'Email o password non corrette.');
+      return;
+    }
+    const {data:p,error:profileError} = await supabase.from('profiles').select('role').eq('id',data.user.id).maybeSingle();
+    if(profileError || p?.role !== 'client'){
+      await supabase.auth.signOut();
+      showMessage('Questo account non è un account cliente.');
+      return;
+    }
+    showMessage('✓ Accesso effettuato. Sto aprendo la tua area personale…', true);
+    window.location.replace('area-cliente.html');
+  }catch(err){
+    showMessage(err.message === 'AUTH_LIBRARY' ? 'Servizio di autenticazione non disponibile. Riprova quando il sito è online.' : 'Si è verificato un problema durante l’accesso.');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'ACCEDI →';
+  }
+});
+</script></body></html>

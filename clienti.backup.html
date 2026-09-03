@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clienti — Home Coaching</title>
+<style>body{margin:0;background:linear-gradient(135deg,#f7fbff,#fff,#f7f0ff);color:#1d1d1f;font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}.wrap{width:min(520px,calc(100% - 32px));margin:auto;padding:80px 0}.brand{font-weight:900;letter-spacing:-.5px;margin-bottom:50px}.card{background:#fff;border:1px solid #d2d2d7;border-radius:26px;padding:32px;box-shadow:0 20px 55px rgba(0,0,0,.07)}h1{font-size:44px;line-height:1;margin:0 0 10px;letter-spacing:-2px}p{color:#6e6e73}.field{margin:18px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.field input{width:100%;padding:14px;border:1px solid #d2d2d7;border-radius:12px;font:inherit;box-sizing:border-box}.btn{width:100%;padding:15px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:900;cursor:pointer}.btn:disabled{opacity:.55}.back{display:inline-block;margin-top:18px;color:#007aff;font-weight:700;font-size:14px}.msg{margin-top:14px;font-size:14px;font-weight:700;min-height:20px}</style></head>
+<body><main class="wrap"><div class="brand">HOME COACHING</div><div class="card"><div style="color:#007aff;font-weight:800;font-size:12px;letter-spacing:1.5px">AREA CLIENTI</div><h1>Accedi.</h1><p>Entra nel tuo percorso personale.</p><div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" inputmode="email"></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div><button id="submit" class="btn" type="button">ACCEDI →</button><div id="msg" class="msg" role="status" aria-live="polite"></div><a class="back" href="index.html">← Torna alla Home</a></div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(() => {
+  const URL='https://exhgrwelqwitxlfscybo.supabase.co';
+  const KEY='sb_publishable_efqq6jXmGTgdYidkIz55gw_PkwcOLH-';
+  const btn=document.getElementById('submit'), emailEl=document.getElementById('email'), passEl=document.getElementById('password'), msg=document.getElementById('msg');
+  let sb;
+  try { sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}); } catch(e) { console.error(e); }
+  const say=(t,ok=false)=>{msg.textContent=t;msg.style.color=ok?'#246536':'#a32119';};
+  async function login(){
+    const email=emailEl.value.trim().toLowerCase(), password=passEl.value;
+    if(!email || !password){say('Inserisci email e password.');return;}
+    if(!sb){say('Servizio di accesso non disponibile.');return;}
+    btn.disabled=true; btn.textContent='ACCESSO…'; say('');
+    try{
+      const r=await fetch(URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':KEY},body:JSON.stringify({email,password})});
+      const data=await r.json();
+      if(!r.ok || !data.access_token || !data.refresh_token){
+        console.error('AUTH',r.status,data);
+        say(data?.error_description || (data?.msg==='Invalid login credentials'?'Email o password non corrette.':'Accesso non riuscito.'));
+        return;
+      }
+      const {error}=await sb.auth.setSession({access_token:data.access_token,refresh_token:data.refresh_token});
+      if(error){console.error(error);say('Sessione non salvata. Riprova.');return;}
+      const {data:{session}}=await sb.auth.getSession();
+      if(!session){say('Sessione non disponibile. Riprova.');return;}
+      say('✓ Accesso effettuato. Apro la tua area personale…',true);
+      setTimeout(()=>window.location.href='area-cliente.html?t='+Date.now(),200);
+    }catch(e){console.error(e);say('Errore di connessione. Riprova.');}
+    finally{setTimeout(()=>{btn.disabled=false;btn.textContent='ACCEDI →';},300);}
+  }
+  btn.addEventListener('click',login); passEl.addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+})();
+</script></body></html>
